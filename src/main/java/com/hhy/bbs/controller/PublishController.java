@@ -36,6 +36,9 @@ private UserMapper userMapper;
             @RequestParam("tag") String tag,
             HttpServletRequest request,
             Model model) {
+        model.addAttribute("title", title);
+        model.addAttribute("description", description);
+        model.addAttribute("tag",tag);
         User user = null;
         Cookie[] cokies=request.getCookies();
         for (Cookie cookie:cokies){
