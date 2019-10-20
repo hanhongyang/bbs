@@ -40,8 +40,9 @@ private UserMapper userMapper;
         model.addAttribute("description", description);
         model.addAttribute("tag",tag);
         User user = null;
-        Cookie[] cokies=request.getCookies();
-        for (Cookie cookie:cokies){
+        Cookie[] cookies=request.getCookies();
+        if(cookies!=null&&cookies.length!=0)
+        for (Cookie cookie:cookies){
             if(cookie.getName().equals("token")){
                 String token=cookie.getValue();
                  user=userMapper.findByToken(token);
