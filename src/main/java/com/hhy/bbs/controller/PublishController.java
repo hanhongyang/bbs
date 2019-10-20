@@ -4,6 +4,7 @@ import com.hhy.bbs.mapper.QuestionMapper;
 import com.hhy.bbs.mapper.UserMapper;
 import com.hhy.bbs.model.Question;
 import com.hhy.bbs.model.User;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,6 +40,18 @@ private UserMapper userMapper;
         model.addAttribute("title", title);
         model.addAttribute("description", description);
         model.addAttribute("tag",tag);
+        if (StringUtils.isBlank(title)) {
+            model.addAttribute("error", "标题不能为空");
+            return "publish";
+        }
+        if (StringUtils.isBlank(description)) {
+            model.addAttribute("error", "问题补充不能为空");
+            return "publish";
+        }
+        if (StringUtils.isBlank(tag)) {
+            model.addAttribute("error", "标签不能为空");
+            return "publish";
+        }
         User user = null;
         Cookie[] cookies=request.getCookies();
         if(cookies!=null&&cookies.length!=0)
