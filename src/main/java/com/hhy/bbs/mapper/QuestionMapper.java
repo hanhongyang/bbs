@@ -1,5 +1,6 @@
 package com.hhy.bbs.mapper;
 
+import com.hhy.bbs.dto.QuestionDTO;
 import com.hhy.bbs.model.Question;
 import com.hhy.bbs.model.QuestionExample;
 import org.apache.ibatis.annotations.Insert;
@@ -22,4 +23,6 @@ public interface QuestionMapper {
     List<Question> listByUserId(@Param(value = "userId")Integer userId,@Param(value = "offset") Integer offset, @Param(value = "size")Integer size);
     @Select("select count(1) from question where creator=#{userId}")
     Integer countByUserId(@Param(value = "userId")Integer userId);
+    @Select("select * from question where id=#{id}")
+    Question getById(@Param(value = "id")Integer id);
 }

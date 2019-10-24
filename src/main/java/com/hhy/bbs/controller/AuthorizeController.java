@@ -5,6 +5,7 @@ import com.hhy.bbs.dto.GithubUser;
 import com.hhy.bbs.mapper.UserMapper;
 import com.hhy.bbs.model.User;
 import com.hhy.bbs.provider.GithubProvider;
+import com.hhy.bbs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -19,14 +20,14 @@ import java.util.UUID;
 public class AuthorizeController {
 @Autowired
 private GithubProvider githubProvider;
+@Autowired
+private UserService userService;
 @Value("${github.client.id}")
    private String clientId;
 @Value("${github.client.secret}")
    private String clientSerect;
 @Value("${github.redirect.uri}")
    private String redirectUri ;
-@Autowired
-private UserMapper userMapper;
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code")String code,
                            @RequestParam(name="state")String state,
@@ -48,7 +49,7 @@ private UserMapper userMapper;
             user.setGmtCreate(System.currentTimeMillis());
             user.setGmtModified(user.getGmtCreate());
             user.setAvatarUrl(githubUser.getAvatar_url());
-            userMapper.insert(user);
+            userService.createOrUpdate(user);
             response.addCookie(new Cookie("token",token));
             return "redirect:/";
             //登录成功
