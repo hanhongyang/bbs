@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <title>弘扬社区</title>
 
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/css/community.css">
-    <script src="js/bootstrap.min.js" type="application/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="application/javascript"></script>
 </head>
 <body>
 <div th:insert="~{Navigation :: nav}"/>
@@ -19,6 +19,7 @@
             <hr>
 
             <form action="/publish" method="post">
+                <input type="hidden" name="id" th:value="${id}">
                 <div class="form-group">
                     <label for="title">问题标题（简单扼要）:</label>
                     <input type="text" class="form-control"  id="title" name="title"th:value="${title}"
@@ -28,7 +29,7 @@
                 <div class="form-group" >
                     <label for="description">问题补充 (必填，请参照右侧提示):</label>
                     <textarea name="description" id="description"
-                              th:value="${description}"
+                              th:text="${description}"
                               class="form-control"
                               cols="30"
                               rows="10"></textarea>
@@ -36,7 +37,7 @@
 
                 <div class="form-group">
                     <label for="tag">添加标签:</label>
-                    <input type="text" class="form-control"  th:text="${tag}" id="tag" name="tag" autocomplete="off" placeholder="输入标签，以，号分隔" >
+                    <input type="text" class="form-control"  th:value="${tag}" id="tag" name="tag" autocomplete="off" placeholder="输入标签，以，号分隔" >
                 </div>
                 <div class="container-fluid main ">
                     <div class="row">
