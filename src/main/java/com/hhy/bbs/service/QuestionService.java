@@ -4,6 +4,7 @@ import com.hhy.bbs.dto.PaginationDTO;
 import com.hhy.bbs.dto.QuestionDTO;
 import com.hhy.bbs.exception.CustomizeErrorCode;
 import com.hhy.bbs.exception.CustomizeException;
+import com.hhy.bbs.mapper.QuestionExtMapper;
 import com.hhy.bbs.mapper.QuestionMapper;
 import com.hhy.bbs.mapper.UserMapper;
 import com.hhy.bbs.model.Question;
@@ -17,11 +18,13 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @Service
 public class QuestionService {
     @Autowired
     private QuestionMapper questionMapper;
-
+@Autowired
+private QuestionExtMapper questionExtMapper;
 
     @Autowired
     private UserMapper userMapper;
@@ -129,5 +132,12 @@ paginationDTO.setPagination(totalPage,page);
                 throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
             }
         }
+    }
+
+    public void incView(Integer id) {
+       Question question=new Question();
+       question.setId(id);
+       question.setViewCount(1);
+       questionExtMapper.incView(question);
     }
 }
