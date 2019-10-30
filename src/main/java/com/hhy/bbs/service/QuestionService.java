@@ -2,6 +2,8 @@ package com.hhy.bbs.service;
 
 import com.hhy.bbs.dto.PaginationDTO;
 import com.hhy.bbs.dto.QuestionDTO;
+import com.hhy.bbs.exception.CustomizeErrorCode;
+import com.hhy.bbs.exception.CustomizeException;
 import com.hhy.bbs.mapper.QuestionMapper;
 import com.hhy.bbs.mapper.UserMapper;
 import com.hhy.bbs.model.Question;
@@ -97,6 +99,9 @@ paginationDTO.setPagination(totalPage,page);
 
     public QuestionDTO getById(Integer id) {
         Question question=questionMapper.selectByPrimaryKey(id);
+        if(question==null){
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }
         QuestionDTO questionDTO = new QuestionDTO();
         BeanUtils.copyProperties(question, questionDTO);
         User user = userMapper.selectByPrimaryKey(question.getCreator());
@@ -119,8 +124,10 @@ paginationDTO.setPagination(totalPage,page);
             updateQuestion.setTag(question.getTag());
             QuestionExample example=new QuestionExample();
             example.createCriteria().andIdEqualTo(question.getId());
-            questionMapper.updateByExampleSelective(updateQuestion,example);
-
+            int updated=questionMapper.updateByExampleSelective(updateQuestion,example);
+            if(updated!=1){
+                throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+            }
         }
     }
 }
